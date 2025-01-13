@@ -10,8 +10,14 @@ const schema = buildSchema(`
         description: String
         price: Float
         soldout: Boolean
+        stores: [Store]! 
     
     }
+
+        type Store {
+            store: String
+        }
+
         type Query {
             product: Product
         }

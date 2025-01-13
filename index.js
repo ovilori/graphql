@@ -18,7 +18,12 @@ const root = {
             "name": "Car",
             "description": "2020 Toyota Hybrid",
             "price": 30000.00,
-            "soldout": false
+            "soldout": false,
+            "stores": [
+                { store: "K-Cars"},
+                { store: "Auto Fleet"},
+                { store: "Drive well Cars Inc."}
+            ]
         }
     }};
 
