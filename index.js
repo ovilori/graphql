@@ -1,6 +1,7 @@
 import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import schema from './data/schema';
+import resolvers from './data/resolver';
 
 const PORT = 8080;
 
@@ -10,26 +11,12 @@ app.get('/', (req, res) => {
     res.send('GraphQL is amazing!');
 });
 
-//const root = {hello: () => "Hello, I am Alfie"} //resolver
-const root = {
-    product: () => {
-        return {
-            "id": 36646272772,
-            "name": "Car",
-            "description": "2020 Toyota Hybrid",
-            "price": 30000.00,
-            "soldout": false,
-            "stores": [
-                { store: "K-Cars"},
-                { store: "Auto Fleet"},
-                { store: "Drive well Cars Inc."}
-            ]
-        }
-    }};
+//const root = resolvers;
 
 app.use('/graphql', graphqlHTTP({
     schema: schema,
-    rootValue: root,
+    rootValue: resolvers,
+    //rootValue: root,
     graphiql: true,
 }));
 
