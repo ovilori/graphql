@@ -21,6 +21,7 @@ const resolvers = {
             throw new Error(error);
         }
     },
+    //creating items with mutation
     createProduct: async ({ input }) => {
         const newCars = new Cars({
             name: input.name,
@@ -35,6 +36,16 @@ const resolvers = {
         try {
             await newCars.save();
             return newCars;
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
+    //updating items with mutations
+    updateProduct: async ( { input }) => {
+        try{
+            //find item by id, if found, update and if not create.
+            const updateCars = await Cars.findByIdAndUpdate({ _id: input.id}, input, {new: true});
+            return updateCars;
         } catch (error) {
             throw new Error(error);
         }
