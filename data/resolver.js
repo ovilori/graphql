@@ -40,6 +40,7 @@ const resolvers = {
             throw new Error(error);
         }
     },
+
     //updating items with mutations
     updateProduct: async ( { input }) => {
         try{
@@ -49,7 +50,19 @@ const resolvers = {
         } catch (error) {
             throw new Error(error);
         }
+    },
+
+    //deleting items with mutations
+    deleteProduct: async ({ id }) => {
+        try {
+            //delete using the id
+            await Cars.deleteOne({ _id: id });
+            return 'Item deleted successfully';
+        } catch (error) {
+            throw new Error('ID does not exist or incorrect. ID cannot be empty')
+        }
     }
+    
 }
 
 export default resolvers;
