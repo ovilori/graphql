@@ -21,11 +21,23 @@ const resolvers = {
             throw new Error(error);
         }
     },
-    createProduct: ({ input }) => {
-        // let id = require('crypto').randomBytes(10).toString('hex'); //generating product id randomly
-        // productDatabase[id] = input;
-        // return new Product(id, input) //returning the product with the ID
-
+    createProduct: async ({ input }) => {
+        const newCars = new Cars({
+            name: input.name,
+            description: input.description,
+            price: input.price,
+            soldout: input.soldout,
+            inventory: input.inventory,
+            stores: input.stores,
+        });
+        
+        newCars.id = newCars._id;
+        try {
+            await newCars.save();
+            return newCars;
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 }
 
