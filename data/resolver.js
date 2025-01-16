@@ -1,32 +1,32 @@
-//resolvers - these are the functions that responds to queries and mutations, providing the result of the query.
+//resolver to user with MongoDB
+// //resolvers - these are the functions that responds to queries and mutations, providing the result of the query.
 
-//declaring a class
-class Product {
-    constructor(id, {name, description, price, soldout, inventory, stores}){
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.soldout = soldout;
-        this.inventory = inventory;
-        this.stores = stores;
-    }
-}
+
 
 //in memory objects to hold products
 
+//import schema from dbConnectors.js file
+
+import { Cars } from "./dbConnectors";
+
 const productDatabase = {};
 
+//function that returns information from the database
 const resolvers = {
-    getProduct: ({ id }) => {
-        return new Product(id, productDatabase[id]);
+    getProduct: async ({ id }) => {
+        try {
+            const product = await Cars.findById(id);
+            return product;
+        } catch (error) {
+            throw new Error(error);
+        }
     },
-
     createProduct: ({ input }) => {
-        let id = require('crypto').randomBytes(10).toString('hex'); //generating product id randomly
-        productDatabase[id] = input;
-        return new Product(id, input) //returning the product with the ID
+        // let id = require('crypto').randomBytes(10).toString('hex'); //generating product id randomly
+        // productDatabase[id] = input;
+        // return new Product(id, input) //returning the product with the ID
 
     }
 }
+
 export default resolvers;
