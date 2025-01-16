@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import { Sequelize, DataTypes } from "sequelize";
+import _ from 'lodash';
+import casual from "casual"; //to generate some data
 
 //function to connect to mongoDB
 async function connectMongo() {
@@ -23,9 +26,38 @@ const carsSchema = new mongoose.Schema({
 });
 
 //apply the schema to the cars database on the MongoDB
-
 const Cars = mongoose.model('cars', carsSchema);
 
-//export for use in resolvers
+//create Sequelize connection
+const sequelize = new Sequelize('sqlite::memory:')
 
-export { Cars };
+//functions that will connect to Sequelize
+//creating categories model for products i.e schema for a table categories in Category DB
+const Categories = sequelize.define('categories', {
+    category: DataTypes.STRING,
+    description: DataTypes.STRING,
+});
+
+//making a connection to Sequelize
+async function syncAndSeedCategories() {
+    try {
+        await sequelize.sync( {force: true });
+        console.log('Connected to SQLite and Categories model is synced.')
+
+        //Seed categories - creating elements inside the database
+        await Promise.all(_.times(5, () => {
+            return Categories.create({
+                category: casual.word,
+                description: casual.sentence,
+            });
+        }));
+        console.log('Categories seeded');
+    } catch (error) {
+        console.log('Error with SQLite DB:', error)
+    }
+}
+//run the seed function
+syncAndSeedCategories();
+
+//export for use in resolvers
+export { Cars, Categories };
