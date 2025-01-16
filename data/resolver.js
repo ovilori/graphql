@@ -13,6 +13,7 @@ const productDatabase = {};
 
 //function that returns information from the database
 const resolvers = {
+    //return item
     getProduct: async ({ id }) => {
         try {
             const product = await Cars.findById(id);
@@ -21,6 +22,17 @@ const resolvers = {
             throw new Error(error);
         }
     },
+
+    //return all items
+    getAllProducts: async () => {
+        try {
+            //returns all items
+            return await Cars.find({});
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
+
     //creating items with mutation
     createProduct: async ({ input }) => {
         const newCars = new Cars({
